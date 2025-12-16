@@ -8,7 +8,6 @@ interface Database {
     email: string;
   };
 
-  // other tables...
 }
 
 const dialect = new PostgresDialect({
