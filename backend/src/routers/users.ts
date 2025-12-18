@@ -1,13 +1,10 @@
-import { z } from "zod";
-import { router, publicProcedure } from "../db/trpc";
-import { id } from "zod/v4/locales";
+import { z } from 'zod';
+import { router, publicProcedure } from '../db/trpc';
+import { id } from 'zod/v4/locales';
 
 export const usersRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db
-      .selectFrom('users')
-      .selectAll()
-      .execute();
+    return await ctx.db.selectFrom('users').selectAll().execute();
   }),
 
   getById: publicProcedure
@@ -21,10 +18,12 @@ export const usersRouter = router({
     }),
 
   create: publicProcedure
-    .input(z.object({
-      name: z.string(),
-      email: z.email(),
-    }))
+    .input(
+      z.object({
+        name: z.string(),
+        email: z.email(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return await ctx.db
         .insertInto('users')
