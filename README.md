@@ -4,3 +4,8 @@ Full-stack project made using React, Vite, TypeScript, TailwindCSS, tRPC, Kysely
 
 .vscode/ folders have editor settings configured, to ensure that hypothetical developer team has consistent tools.
 
+backend/
+  src/
+    types.ts  Creates an interface for database and models the tables.
+
+    
