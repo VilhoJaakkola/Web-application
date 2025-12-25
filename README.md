@@ -21,3 +21,5 @@ src/
 │       └── 
 ├── server.ts         # Defines express app, uses trpc-router for app and listens to port.
 ```
+
+schemas.ts Has Zod-schemas for checking that the actual input matches the types that are defined with Kysely.

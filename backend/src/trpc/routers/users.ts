@@ -1,47 +1,92 @@
 import { z } from 'zod';
-import { router, publicProcedure } from '..';
-import type { NewUser } from '../../db/types';
 import { TRPCError } from '@trpc/server';
+import { router, publicProcedure } from '..';
+import type { User, NewUser, UserUpdate } from '../../db/types';
+import {
+  insertUserSchema,
+  updateUserSchema,
+  userIdSchema,
+} from '../../db/schemas';
 
 export const usersRouter = router({
-  getAll: publicProcedure.query(async ({ ctx }) => {
+  getAll: publicProcedure.query(async ({ ctx }): Promise<User[]> => {
     return await ctx.db.selectFrom('users').selectAll().execute();
   }),
 
-  getById: publicProcedure.input(z.uuidv7()).query(async ({ ctx, input }) => {
-    const user = await ctx.db
-      .selectFrom('users')
-      .selectAll()
-      .where('id', '=', input)
-      .executeTakeFirst();
+  getById: publicProcedure
+    .input(z.uuidv7())
+    .query(async ({ ctx, input }): Promise<User> => {
+      const user: User | undefined = await ctx.db
+        .selectFrom('users')
+        .selectAll()
+        .where('id', '=', input)
+        .executeTakeFirst();
 
-    if (!user) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'User not found',
-      });
-    }
-    return user;
-  }),
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
+      return user;
+    }),
 
   create: publicProcedure
-    .input(
-      z.object({
-        first_name: z.string().min(1),
-        last_name: z.string().min(1),
-        email: z.email(),
-        password_hash: z.string().min(8),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
+    .input(insertUserSchema)
+    .mutation(async ({ ctx, input }): Promise<User> => {
       const newUser: NewUser = {
-        ...input,
-        password_hash: input.password_hash, // Hashing should be done before calling this
+        ...input // Hashing should be done before calling this
       };
+
       return await ctx.db
         .insertInto('users')
         .values(newUser)
         .returningAll()
         .executeTakeFirstOrThrow();
+    }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        id: userIdSchema,
+        data: updateUserSchema,
+      }),
+    )
+    .mutation(async ({ ctx, input }): Promise<User> => {
+      const userUpdate: UserUpdate = input.data;
+
+      const updatedUser = await ctx.db
+        .updateTable('users')
+        .set(userUpdate)
+        .where('id', '=', input.id)
+        .returningAll()
+        .executeTakeFirst();
+
+      if (!updatedUser) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found for update',
+        });
+      }
+      return updatedUser;
+    }),
+
+  delete: publicProcedure
+    .input(z.uuidv7())
+    .mutation(async ({ ctx, input }): Promise<User> => {
+      const result = await ctx.db
+        .deleteFrom('users')
+        .where('id', '=', input)
+        .returningAll()
+        .executeTakeFirst();
+
+      if (!result) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found for deletion',
+        });
+      }
+
+      return result;
     }),
 });
