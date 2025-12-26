@@ -17,7 +17,7 @@ export interface UserTable {
   last_name: string;
   email: string;
   password_hash: string;
-  created_at: ColumnType<Date, string | undefined, never>;
+  created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }
 
@@ -26,7 +26,7 @@ export interface PostTable {
   user_id: string;
   title: string;
   content: string;
-  created_at: ColumnType<Date, string | undefined, never>;
+  created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }
 
