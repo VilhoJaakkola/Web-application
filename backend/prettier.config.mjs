@@ -2,6 +2,8 @@ export default {
   singleQuote: true,
   trailingComma: 'all',
   tabWidth: 2,
-  printWidth: 80,
+  printWidth: 100,
   arrowParens: 'avoid',
+  semi: true,
+  endOfLine: 'lf',
 }
