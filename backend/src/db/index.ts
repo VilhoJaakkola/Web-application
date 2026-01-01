@@ -10,7 +10,7 @@ const dialect = new PostgresDialect({
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
     database: process.env.DB_NAME || 'webappdb',
-    user: process.env.DB_USER || 'webappuser',
+    user: process.env.DB_USER || 'appuser',
     password: process.env.DB_PASSWORD || 'webapp123',
   }),
 });
