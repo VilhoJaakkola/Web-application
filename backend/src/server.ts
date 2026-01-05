@@ -1,8 +1,9 @@
-import express from 'express';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
 import pino from 'pino';
+
 import { createContext } from './trpc/context';
 import { appRouter } from './trpc/routers';
 

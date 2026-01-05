@@ -1,9 +1,10 @@
-import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
+
 import { router, publicProcedure } from '..';
-import { hashPassword } from '../../utils/hash';
 import { updateUserSchema, userIdSchema, insertUserSchema } from '../../db/schemas';
 import type { User, NewUser, UserUpdate } from '../../db/types';
+import { hashPassword } from '../../utils/hash';
 import { type SafeUser, sanitizeUser, sanitizeUsers } from '../../utils/user';
 
 export const usersRouter = router({

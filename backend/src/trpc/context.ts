@@ -1,10 +1,8 @@
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
+
 import { db } from '../db';
 
-export const createContext = async ({
-  req,
-  res,
-}: CreateExpressContextOptions) => {
+export const createContext = ({ req, res }: CreateExpressContextOptions) => {
   // const token = req.headers.authorization?.split(' ')[1];
   // const userId = await verifyToken(token);
 
