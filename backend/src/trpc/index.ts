@@ -10,6 +10,7 @@ const t = initTRPC.context<Context>().create({
       data: {
         ...shape.data,
         // custom errors here
+        code: error.code,
       },
     };
   },
