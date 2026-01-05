@@ -3,7 +3,7 @@ export default {
   trailingComma: 'all',
   tabWidth: 2,
   printWidth: 100,
-  arrowParens: 'avoid',
+  arrowParens: 'always',
   semi: true,
   endOfLine: 'lf',
 }

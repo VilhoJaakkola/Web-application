@@ -1,9 +1,7 @@
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
-import type { Database } from './types';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import type { Database } from './types';
 
 const dialect = new PostgresDialect({
   pool: new Pool({
@@ -18,7 +16,5 @@ const dialect = new PostgresDialect({
 export const db = new Kysely<Database>({
   dialect,
   // in development, you can log
-  log: process.env.NODE_ENV === 'development'
-    ? ['query', 'error']
-    : ['error'],
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error'] : ['error'],
 });

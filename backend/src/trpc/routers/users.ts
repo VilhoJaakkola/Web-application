@@ -1,10 +1,11 @@
-import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
+
 import { router, publicProcedure } from '..';
-import { hashPassword } from '../../utils/hash';
 import { updateUserSchema, userIdSchema, insertUserSchema } from '../../db/schemas';
 import type { User, NewUser, UserUpdate } from '../../db/types';
-import { SafeUser, sanitizeUser, sanitizeUsers } from '../../utils/user';
+import { hashPassword } from '../../utils/hash';
+import { type SafeUser, sanitizeUser, sanitizeUsers } from '../../utils/user';
 
 export const usersRouter = router({
   getAll: publicProcedure.query(async ({ ctx }): Promise<SafeUser[]> => {
